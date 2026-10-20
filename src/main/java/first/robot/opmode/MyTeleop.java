@@ -20,6 +20,9 @@ public class MyTeleop extends PeriodicOpMode {
   /** The Robot instance is passed into the opmode via the constructor. */
   public MyTeleop(Robot robot) {
     this.robot = robot;
+    
+    setDefaultCommand(arcadeDrive);
+    
   }
 
   xbox.leftBumper().whileTrue(robot.intakeLauncher.intake());

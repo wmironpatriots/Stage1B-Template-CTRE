@@ -1,0 +1,72 @@
+package first.robot.mechanisms;
+
+import java.util.function.DoubleSupplier;
+
+import org.wpilib.command3.Command;
+import org.wpilib.command3.Mechanism;
+import org.wpilib.drive.DifferentialDrive;
+import org.wpilib.hardware.bus.CANPort;
+import org.wpilib.hardware.imu.OnboardIMU;
+import org.wpilib.hardware.imu.OnboardIMU.MountOrientation;
+
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import first.robot.simulation.DrivetrainSim;
+
+public class Drivetrain implements Mechanism{
+    private final TalonFX leftLeader = new TalonFX(0, new CANBus(CANPort.CAN_S0));
+    private final TalonFX leftFollower = new TalonFX(1, new CANBus(CANPort.CAN_S0));
+
+    private final TalonFX rightLeader = new TalonFX(2, new CANBus(CANPort.CAN_S0));
+    private final TalonFX rightFollower = new TalonFX(3, new CANBus(CANPort.CAN_S0));
+
+    public final DifferentialDrive drivetrain =
+      new DifferentialDrive(leftLeader::setThrottle, rightLeader::setThrottle);
+
+    private final OnboardIMU imu = new OnboardIMU(MountOrientation.FLAT);
+
+    private final DrivetrainSim drivetrainSim = new DrivetrainSim(leftLeader, rightLeader);
+
+
+    TalonFXConfiguration leftConfig = new TalonFXConfiguration();
+    leftConfig.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
+    leftLeader.getConfigurator().apply(leftConfig);
+    leftFollower.getConfigurator().apply(leftConfig);
+
+    leftFollower.setControl(new Follower(leftLeader.getDeviceID(), MotorAlignmentValue.Aligned));
+
+    TalonFXConfiguration rightConfig = new TalonFXConfiguration();
+    rightConfig.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive);
+    rightLeader.getConfigurator().apply(rightConfig);
+    rightFollower.getConfigurator().apply(rightConfig);
+
+    rightFollower.setControl(new Follower(rightLeader.getDeviceID(), MotorAlignmentValue.Aligned));
+ 
+ 
+ 
+    public Command idle() {
+    return run(coroutine -> {
+          while (true) {
+            drivetrain.arcadeDrive(0, 0);
+            coroutine.yield();
+          }
+        })
+        .named("Idle");
+  }
+    public Command  arcadeDrive(DoubleSupplier forwardThrottle, DoubleSupplier rotationThrottle) (){
+        return run(coroutine -> {
+          while (true) {
+              drivetrain.arcadeDrive(forwardThrottle.getAsDouble(), rotationThrottle.getAsDouble());
+            coroutine.yield();
+          }
+        })
+        .named("updating speeds");
+    }
+ 
+    public void periodic() {
+    drivetrainSim.periodic();
+  }
+
+}

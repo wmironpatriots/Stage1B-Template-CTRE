@@ -8,6 +8,7 @@ package first.robot;
 import org.wpilib.command3.Scheduler;
 import org.wpilib.framework.OpModeRobot;
 
+import first.robot.mechanisms.Drivetrain;
 import first.robot.mechanisms.Feeder;
 import first.robot.mechanisms.IntakeLauncher;
 
@@ -27,6 +28,7 @@ public class Robot extends OpModeRobot {
 
   public IntakeLauncher intakeLauncher = new IntakeLauncher();
   public Feeder feeder = new Feeder();
+  public Drivetrain drivetrain = new Drivetrain();
 
   public Robot() {}
 
@@ -38,5 +40,6 @@ public class Robot extends OpModeRobot {
     Scheduler.getDefault().run();
     intakeLauncher.periodic();
     feeder.periodic();
+    drivetrain.periodic();
   }
 }
