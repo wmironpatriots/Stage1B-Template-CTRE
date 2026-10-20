@@ -5,6 +5,7 @@
  */
 package first.robot;
 
+import org.wpilib.command3.Scheduler;
 import org.wpilib.framework.OpModeRobot;
 
 /**
@@ -24,4 +25,9 @@ public class Robot extends OpModeRobot {
 
   @Override
   public void simulationPeriodic() {}
+  
+  @Override
+  public void robotPeriodic() {
+    Scheduler.getDefault().run();
+  }
 }
