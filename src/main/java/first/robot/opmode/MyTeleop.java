@@ -6,6 +6,8 @@
 package first.robot.opmode;
 
 import first.robot.Robot;
+
+import org.wpilib.command3.button.CommandXboxController;
 import org.wpilib.opmode.PeriodicOpMode;
 import org.wpilib.opmode.Teleop;
 
@@ -13,10 +15,21 @@ import org.wpilib.opmode.Teleop;
 public class MyTeleop extends PeriodicOpMode {
   private final Robot robot;
 
+  private final CommandXboxController xbox = new CommandXboxController(0);
+
   /** The Robot instance is passed into the opmode via the constructor. */
   public MyTeleop(Robot robot) {
     this.robot = robot;
   }
+
+  xbox.leftBumper().whileTrue(robot.intakeLauncher.intake());
+  xbox.leftBumper().whileTrue(robot.feeder.intake());
+
+  xbox.rightBumper().whileTrue(robot.intakeLauncher.shoot());
+  xbox.rightBumper().whileTrue(robot.feeder.feed());
+
+  xbox.a().whileTrue(robot.intakeLauncher.outtake());
+  xbox.a().whileTrue(robot.feeder.outtake());
 
   @Override
   public void periodic() {
