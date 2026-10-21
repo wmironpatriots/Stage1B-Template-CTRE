@@ -6,6 +6,8 @@
 package first.robot;
 
 import org.wpilib.framework.OpModeRobot;
+import first.robot.mechanisms.Feeder;
+import first.robot.mechanisms.IntakeLauncher;
 
 /**
  * The methods in this class are called automatically as described in the OpModeRobot documentation.
@@ -15,6 +17,8 @@ import org.wpilib.framework.OpModeRobot;
  * project.
  */
 public class Robot extends OpModeRobot {
+  private final Feeder feeder = new Feeder();
+  private final IntakeLauncher intakeLauncher = new IntakeLauncher();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -24,6 +28,8 @@ public class Robot extends OpModeRobot {
 
   @Override
   public void simulationPeriodic() {
+    feeder.periodic();
+    intakeLauncher.periodic();
     Scheduler.getDefault().run();
   }
 }
