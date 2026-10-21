@@ -23,5 +23,7 @@ public class Robot extends OpModeRobot {
   public Robot() {}
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    Scheduler.getDefault().run();
+  }
 }
