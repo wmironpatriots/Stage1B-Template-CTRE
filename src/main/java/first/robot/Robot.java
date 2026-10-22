@@ -7,6 +7,12 @@ package first.robot;
 
 import org.wpilib.command3.Scheduler;
 import org.wpilib.framework.OpModeRobot;
+import org.wpilib.framework.RobotBase;
+
+import first.robot.mechanisms.Drivetrain;
+import first.robot.mechanisms.Feeder;
+import first.robot.mechanisms.IntakeLauncher;
+import first.robot.simulation.FuelSim;
 
 /**
  * The methods in this class are called automatically as described in the OpModeRobot documentation.
@@ -17,8 +23,22 @@ import org.wpilib.framework.OpModeRobot;
  */
 
 public class Robot extends OpModeRobot {
-  @Override
+
+  public final Drivetrain drivetrain = new Drivetrain();
+  public final IntakeLauncher intakeLauncher = new IntakeLauncher();
+  public final Feeder feeder = new Feeder();
+
+  public Robot() {
+
+  }
+
   public void robotPeriodic() {
     Scheduler.getDefault().run();
+    drivetrain.periodic();
+    intakeLauncher.periodic();
+    feeder.periodic();
+    if (RobotBase.isSimulation()) {
+      FuelSim.periodic();
+    }
   }
 }

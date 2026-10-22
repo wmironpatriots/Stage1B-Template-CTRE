@@ -24,6 +24,9 @@ public class MyTeleop extends PeriodicOpMode {
   public MyTeleop(Robot robot) {
     this.robot = robot;
     this.xbox = new CommandXboxController(0);
+    robot.drivetrain.setDefaultCommand(
+        robot.drivetrain.arcadeDrive(
+            () -> -xbox.getLeftY(), () -> -xbox.getRightX())); 
   }
 
   @Override
