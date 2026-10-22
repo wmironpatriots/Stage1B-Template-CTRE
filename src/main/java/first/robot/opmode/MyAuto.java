@@ -6,16 +6,19 @@
 package first.robot.opmode;
 
 import first.robot.Robot;
+import org.wpilib.driverstation.XboxController;
 import org.wpilib.opmode.Autonomous;
 import org.wpilib.opmode.PeriodicOpMode;
 
 @Autonomous(name = "My Auto", group = "Group 1")
 public class MyAuto extends PeriodicOpMode {
   private final Robot robot;
+  private final XboxController xbox;
 
   /** The Robot instance is passed into the opmode via the constructor. */
   public MyAuto(Robot robot) {
     this.robot = robot;
+    this.xbox = new XboxController(0);
   }
 
   @Override

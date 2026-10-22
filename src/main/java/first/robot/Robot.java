@@ -5,6 +5,7 @@
  */
 package first.robot;
 
+import org.wpilib.command3.Scheduler;
 import org.wpilib.framework.OpModeRobot;
 
 /**
@@ -14,14 +15,10 @@ import org.wpilib.framework.OpModeRobot;
  * or the package after creating this project, you must also update the Main.java file in the
  * project.
  */
+
 public class Robot extends OpModeRobot {
-
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  public Robot() {}
-
   @Override
-  public void simulationPeriodic() {}
+  public void robotPeriodic() {
+    Scheduler.getDefault().run();
+  }
 }
